@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eladio Carrión | Sauce Boy</title>
+
+  <!-- CSS de Bootstrap 5 por CDN (obligatorio) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-black text-white">
+
+  <!-- ========== 1. NAVBAR ========== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-warning">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-warning" href="#inicio">Eladio Carrión</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#menuPrincipal" aria-controls="menuPrincipal"
+              aria-expanded="false" aria-label="Abrir menú">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="menuPrincipal">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item"><a class="nav-link active" href="#inicio">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#albumes">Álbumes</a></li>
+          <li class="nav-item"><a class="nav-link" href="#canciones">Canciones</a></li>
+          <li class="nav-item"><a class="nav-link" href="#playlists">Playlists</a></li>
+          <li class="nav-item"><a class="nav-link" href="#social">Social</a></li>
+          <!-- Abre el MODAL DE FORMULARIO (crear mi playlist) -->
+          <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+            <button type="button" class="btn btn-warning"
+                    data-bs-toggle="modal" data-bs-target="#modalCrear">
+              Crear mi playlist
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== 2. HERO (container-fluid = ancho completo) ========== -->
+  <header id="inicio" class="container-fluid bg-dark text-white py-5 border-bottom border-warning border-4">
+    <div class="py-4 text-center">
+      <h1 class="display-1 fw-bold text-warning">Eladio Carrión</h1>
+      <p class="lead col-lg-6 mx-auto my-4">
+        Escucha sus canciones completas sin salir de la página,
+        o arma tu propia playlist de favoritas.
+      </p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <button type="button" class="btn btn-warning btn-lg" data-accion="aleatorio">
+          Reproducir aleatorio
+        </button>
+        <button type="button" class="btn btn-outline-light btn-lg"
+                data-bs-toggle="modal" data-bs-target="#modalCrear">
+          Crear mi playlist
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== CONTENIDO PRINCIPAL (container = centrado con márgenes) ========== -->
+  <main class="container my-5">
+
+    <!-- ========== 3. GRID DE 4 TARJETAS ==========
+         col-12 (1 columna móvil) | col-md-6 (2 en tablet) | col-lg-3 (4 en escritorio) -->
+    <div class="row g-4 mb-5">
+
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100 bg-dark border-warning">
+          <div class="card-body d-flex flex-column">
+            <h2 class="card-title h5 text-warning">Sobre Eladio</h2>
+            <p class="card-text">Quién es el Sauce Boy y sus álbumes principales.</p>
+            <!-- Abre el MODAL DE DETALLES -->
+            <button type="button" class="btn btn-warning mt-auto"
+                    data-bs-toggle="modal" data-bs-target="#modalDetalles">
+              Ver detalles
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100 bg-dark border-warning">
+          <div class="card-body d-flex flex-column">
+            <h2 class="card-title h5 text-warning">Álbumes</h2>
+            <p class="card-text">Sus discos con portada, listos para escuchar completos.</p>
+            <a href="#albumes" class="btn btn-warning mt-auto">Ver álbumes</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100 bg-dark border-warning">
+          <div class="card-body d-flex flex-column">
+            <h2 class="card-title h5 text-warning">Aleatorio</h2>
+            <p class="card-text">25 canciones al azar, una tras otra.</p>
+            <button type="button" class="btn btn-warning mt-auto" data-accion="aleatorio">
+              Sorpréndeme
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100 bg-dark border-warning">
+          <div class="card-body d-flex flex-column">
+            <h2 class="card-title h5 text-warning">Mi playlist</h2>
+            <p class="card-text">Elige tus canciones favoritas y guárdalas en tu lista.</p>
+            <button type="button" class="btn btn-warning mt-auto"
+                    data-bs-toggle="modal" data-bs-target="#modalCrear">
+              Crear playlist
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========== REPRODUCTOR ========== -->
+    <section id="reproductor" class="mb-5">
+      <h2 class="h3 text-warning">Reproductor</h2>
+      <p id="sonando" class="text-secondary">Elige un álbum, una canción o una playlist.</p>
+      <div id="contenedorReproductor"></div>
+    </section>
+
+    <!-- ========== ÁLBUMES ========== -->
+    <section id="albumes" class="mb-5 pt-3">
+      <h2 class="h3 text-warning">Álbumes</h2>
+      <p class="text-secondary">Cada álbum se reproduce como una lista: las canciones suenan una tras otra.</p>
+      <!-- row-cols-2 / md-3 / lg-5: columnas automáticas por tamaño de pantalla -->
+      <div id="listaAlbumes" class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3"></div>
+    </section>
+
+    <!-- ========== CANCIONES (acordeón de Bootstrap, una lista por álbum) ========== -->
+    <section id="canciones" class="mb-5 pt-3">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h2 class="h3 text-warning mb-0">Canciones</h2>
+        <button type="button" class="btn btn-outline-warning btn-sm" data-accion="aleatorio">Aleatorio</button>
+      </div>
+      <div class="accordion" id="acordeonCanciones"></div>
+    </section>
+
+    <!-- ========== PLAYLISTS ========== -->
+    <section id="playlists" class="mb-5 pt-3">
+      <h2 class="h3 text-warning mb-3">Playlists</h2>
+      <div id="listaPlaylists" class="row g-3 mb-5"></div>
+
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h3 class="h4 text-warning mb-0">Mis playlists</h3>
+        <button type="button" class="btn btn-warning btn-sm"
+                data-bs-toggle="modal" data-bs-target="#modalCrear">+ Crear playlist</button>
+      </div>
+      <div id="listaMisPlaylists" class="row g-3"></div>
+    </section>
+
+    <!-- ========== SOCIAL (pestañas de Bootstrap) ========== -->
+    <section id="social" class="mb-5 pt-3">
+      <h2 class="h3 text-warning mb-3">Social</h2>
+
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabFotos"
+                  type="button" role="tab">Fotos</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabVideos"
+                  type="button" role="tab">Videos</button>
+        </li>
+      </ul>
+
+      <div class="tab-content pt-3">
+        <div class="tab-pane fade show active" id="tabFotos" role="tabpanel">
+          <div id="listaFotos" class="row row-cols-2 row-cols-md-3 g-3"></div>
+        </div>
+        <div class="tab-pane fade" id="tabVideos" role="tabpanel">
+          <div id="listaVideos" class="row row-cols-1 row-cols-md-2 g-3"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-dark text-white-50 text-center py-4 border-top border-warning">
+    <div class="container">
+      <small>Sitio de fan con fines académicos. La música, videos e imágenes pertenecen a sus autores.</small>
+    </div>
+  </footer>
+
+  <!-- ========== 4. MODAL DE DETALLES (se abre desde la tarjeta "Sobre Eladio") ========== -->
+  <div class="modal fade" id="modalDetalles" tabindex="-1" aria-labelledby="tituloDetalles" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5 text-warning" id="tituloDetalles">Eladio Carrión, el Sauce Boy</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Rapero y cantante de trap latino de origen puertorriqueño. Su música se publica
+            con el sello Rimas Entertainment.
+          </p>
+          <p class="mb-1 fw-semibold">Álbumes destacados:</p>
+          <ul class="mb-0">
+            <li>Sauce Boyz (2020)</li>
+            <li>Monarca (2021)</li>
+            <li>Sauce Boyz 2 (2021)</li>
+            <li>3MEN2 KBRN (2023)</li>
+            <li>Sol María (2024)</li>
+            <li>DON KBRN (2025)</li>
+            <li>CORSA (2026)</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL DE FORMULARIO: CREAR MI PLAYLIST ========== -->
+  <div class="modal fade" id="modalCrear" tabindex="-1" aria-labelledby="tituloCrear" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5 text-warning" id="tituloCrear">Crear mi playlist</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <div class="modal-body">
+          <form id="formCrear">
+            <div class="mb-3">
+              <label for="nombrePlaylist" class="form-label">Nombre de tu playlist</label>
+              <input type="text" class="form-control" id="nombrePlaylist" maxlength="40"
+                     placeholder="Ej: Mis favoritas" required>
+            </div>
+            <p class="mb-1 fw-semibold">Elige tus canciones favoritas:</p>
+            <!-- El script llena esta lista con una casilla por canción, agrupadas por álbum -->
+            <div id="checklist" class="mb-3"></div>
+            <div id="errorForm" class="alert alert-danger d-none mb-0" role="alert"></div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <!-- form="formCrear" conecta este botón con el formulario de arriba -->
+          <button type="submit" form="formCrear" class="btn btn-warning">Guardar playlist</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS Bundle de Bootstrap 5 por CDN (obligatorio) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    /* =====================================================================
+       CONTENIDO: AQUÍ AGREGAS O CAMBIAS TODO A MANO
+       ===================================================================== */
+
+    // ---------- ÁLBUMES Y SUS CANCIONES ----------
+    // portada: ruta de la imagen en tu carpeta "img"
+    // canciones: ["Título", "ID de YouTube"]  (el ID es lo que va después de watch?v=)
+    const ALBUMES = [
+      {
+        titulo: "Sauce Boyz", anio: "2020", portada: "https://pin.it/4uU5A09Oz",
+        canciones: [
+          ["3 AM", "xYJulnlENmY"], ["Mala Mía", "So9ABb52Z1o"], ["Mi Funeral", "xdb_Fhshlig"],
+          ["Huh?", "VffNnBDKIgo"], ["Hennessy", "qtr3Rzg1NYQ"], ["Ponte Linda", "BxYXakqR2IA"],
+          ["Rápido", "C0y7AMFU4vY"], ["Actriz", "OE6-BQcTFls"], ["Coroné", "0A-MCwIw4dM"],
+          ["Hielo", "v8rKSm94lv4"], ["Safe With Me", "orOb0QQUd5Q"], ["Kemba Walker", "ZkUTJkkOnzw"],
+          ["Lluvia (Remix)", "nSbmVcJyMWA"], ["Vida Buena", "TPJ8-Fe9ocg"]
+        ]
+      },
+      {
+        titulo: "Sauce Boyz Care Package", anio: "2020", portada: "img/sauce-boyz-care-package.jpg",
+        canciones: [
+          ["Especial", "NFGQajRHnbQ"], ["Sin Ti", "bhKBir89zZQ"], ["Molly Con Henny 2", "gTC3YeSyl68"],
+          ["Tu Amor", "gP3bQet1dYk"], ["Ele Uve", "SDIhU9HnvJ8"], ["Hielo (Remix)", "Kb7EPyikdgU"],
+          ["Vida Buena (Remix)", "24quQc66drs"], ["Ponte Linda (Remix)", "gIV7nC4TMr8"],
+          ["Entre Tantas", "Bl0dXfjZxbs"], ["Corona Freestyle", "AWgJ7tty8CQ"]
+        ]
+      },
+      {
+        titulo: "Monarca", anio: "2021", portada: "img/monarca.jpg",
+        canciones: [
+          ["Todo o Nada", "vxCPAaiCsNc"], ["Progreso", "T0FeQRdNLic"], ["Adiós", "n8-6yM6-FLE"],
+          ["Toretto", "_ESEISpByIY"], ["4 AM", "kk12or4dKJ8"], ["Mírame", "TnFKp0smApk"],
+          ["Nena Buena", "t4ehYG63Tx8"], ["Discoteca", "b4ZMC8sn1Gw"],
+          ["Mami Me Pregunta Si Trapeo", "cW20cSOrPfg"], ["Mariposas", "QNkjLWS6o4Y"],
+          ["Mala Mía 2", "8FTzDJcUIIk"], ["TATA", "ybPiyhUp9XI"], ["Ele Uve (Remix)", "Y0OZUjwDZfg"],
+          ["Sauce Boy Freestyle 3", "XXxdOKjc8eA"]
+        ]
+      },
+      {
+        titulo: "SEN2 KBRN Vol. 1", anio: "2021", portada: "img/sen2-kbrn-vol1.jpg",
+        canciones: [
+          ["Problema", "KVrpajQLEME"], ["La Novena", "m2YBudh1zSg"], ["5 Star", "Oq0dNnd4jkA"],
+          ["Paz Mental", "6DZijDcoGRk"], ["Midas", "69eLJJPqJCI"], ["Sauce Boy Freestyle 4", "mJ8DjLQIJvA"],
+          ["La H", "E0Kf2SeKHvA"], ["Al Capone", "LFiZ0ATwjBs"], ["Guerrero", "z10Iq0prn1s"]
+        ]
+      },
+      {
+        titulo: "Sauce Boyz 2", anio: "2021", portada: "img/sauce-boyz-2.jpg",
+        canciones: [
+          ["No Te Deseo el Mal", "ZPJN-aWvj_U"], ["Hola Cómo Vas", "PKoBuyUfQSo"],
+          ["Me Gustas Natural", "cxGBfqOpVr0"], ["Flores en Anónimo", "Aco1BiMF5t8"],
+          ["Socio", "yIUHc2oCZh8"], ["Claro Cristal", "OEIi2FE-IRw"], ["Sin Frenos", "t3ESWKy7hQ4"],
+          ["Alejarme de Ti", "YYhonlDystg"], ["Como Sea", "vOvI7RLtNL4"], ["Par De Tenis", "9qk3srcv1To"],
+          ["Miradas Raras", "ojKaaW5Y9Rg"], ["Touch Your Body", "2C5K888fsaw"], ["Cheque", "pwA9SlxYN4A"],
+          ["Mami Dijo", "uduM1oA_blI"], ["La Primera Vez", "mBV5-Egpdbg"],
+          ["Quiénes Son Ustedes", "0ruhJkmRhd8"], ["Jóvenes Millonarios", "6ZVjhfk2Tz0"],
+          ["No Me Importa Un C@rajo", "VpteDyc2HXQ"], ["Gastar", "i-CeicbReHk"], ["Fuego", "f-Hun64vQQ4"],
+          ["Cuarentena", "7-vBgG7KJ0w"], ["Sauce Boy Freestyle 5", "uPeJytOWkRQ"]
+        ]
+      },
+      {
+        titulo: "SEN2 KBRN Vol. 2", anio: "2022", portada: "img/sen2-kbrn-vol2.jpg",
+        canciones: [
+          ["Mbappe", "yDhxCiLXEHs"], ["Hugo", "gKFziZB-a_c"], ["Caras Vemos", "pZQqnlgCKMg"],
+          ["Gladiador", "KFLQWiVqPoY"], ["Friends", "EhSYhPZlG-s"], ["Si La Calle Llama", "4cxn6-2GUHY"],
+          ["Carta a Dios", "ND90KbDaK88"], ["HP Freestyle", "mBxStvJ9nNE"], ["La Fama", "qU9eUiniivo"],
+          ["Te Dijeron", "ESb9bnwGCO0"]
+        ]
+      },
+      {
+        titulo: "3MEN2 KBRN", anio: "2023", portada: "img/3men2-kbrn.jpg",
+        canciones: [
+          ["Coco Chanel", "j1VVY2sEdC0"], ["Si La Calle Llama (Remix)", "_REASiFeT_g"],
+          ["Mbappe (Remix)", "0AT35qjBpu4"], ["El Hokage", "GCz_PXIxRrs"], ["Friends (Remix)", "3jI2L_BaxyA"],
+          ["¿Qué Carajos Quieres Tú Ahora?", "vyLAlJ0-Rc4"], ["Padre Tiempo", "2cl5HKZ6iS4"],
+          ["Quizás, Tal Vez", "3nFdLB3OANQ"], ["Haciendo Dinero", "F8eHpDhsSsQ"],
+          ["Mala Mía Otra Vez", "sYnHKXectdc"], ["Si Salimos", "pkPj5qvPf7M"], ["Betty", "kaQ3VXSkrvs"],
+          ["Gladiador (Remix)", "bZ8diGe1EU0"], ["Peso a Peso", "rbf4fFJk3_0"], ["Cuevita", "EOyu6kz_W9o"],
+          ["M3", "fv-4jrwxyb8"], ["Air France", "boSmJasFPto"]
+        ]
+      },
+      {
+        titulo: "Sol María", anio: "2024", portada: "img/sol-maria.jpg",
+        canciones: [
+          ["TQMQA", "EMCTInxjfQc"], ["Hey Lil Mama", "wBUeg1Fed_o"], ["El Malo", "pDJoAB9kpzY"],
+          ["Sigo Enamorau'", "_jMz4QKEihM"], ["Tu Ritmo", "EcENgXSfY74"], ["Bendecido", "WXjTD1yOfK0"],
+          ["La Canción Feliz Del Disco", "gsuOmQBrdKw"], ["Luchas Mentales", "dlgWOcxd8K0"],
+          ["Fé, Cojones y Paciencia", "-8NIGbcXis0"], ["Mama's Boy", "YQbgdIvC4Io"],
+          ["Tanta Droga", "qVXwEcnDFUw"], ["Mencionar", "t-WI9pQ4vDQ"], ["Todo Lit", "yTAh5-e2dRY"],
+          ["Tranquila Baby", "KQ5gqIFruDo"], ["Sonrisa", "xIN_If3Bais"], ["RKO", "eL2foCWyqns"]
+        ]
+      },
+      {
+        titulo: "DON KBRN", anio: "2025", portada: "img/don-kbrn.jpg",
+        canciones: [
+          ["Vetements", "XihNHJsS0cU"], ["100 Conmigo", "WDidbVVO0ag"], ["Romeo y Julieta", "XCxVffgBW2Q"],
+          ["Broly", "8Dmv7m6esNk"], ["El Reggaetón Del Disco", "ksNpRkXmqdE"], ["Me Muero", "aG4oEt-fD-Q"],
+          ["Piedras En La Ventana", "hjjHgXnd3x4"], ["Tiffany", "VK_VnwC40WU"], ["Ohtani", "hnB5F_06QSo"],
+          ["Özil", "NoQWpruiMRA"], ["AMG", "hR4_M-LpNIo"], ["Invencible", "YmD0qfyOqsM"],
+          ["E.L.A.D.I.O", "v_XYGt72MWk"], ["Y U So Cold?", "7PBZc48Myug"], ["Cómodo", "IYUN2oKARUI"],
+          ["Mosh Pit Muzik", "uJQI335Oizg"], ["Branzino", "qb0R28lV3ic"], ["Carta a Dios 2", "N8wkYr27ZKM"],
+          ["Call My Line", "gHJIZLjO8_g"], ["Cuenta a 10", "NxGWg4WHzyg"], ["H.I.M", "3HzkEp7ac14"]
+        ]
+      },
+      {
+        titulo: "CORSA", anio: "2026", portada: "img/corsa.jpg",
+        canciones: [
+          ["Intro", "CvlQMo_NvFs"], ["Ricky Bobby", "aLVwW5ViWbM"], ["Daikoku", "wMR80j9QHRY"],
+          ["Body", "3H4rxdPIx74"], ["Polaroid", "9KH0lpEM8vE"], ["Estrella", "vwtHSZdpEIo"],
+          ["Impredecible", "ETCO5JwM5uk"], ["Benji", "LqpFw2Aab2U"], ["GUWOP", "833GZpATJi8"],
+          ["Kimchi", "EgNPamcXUss"], ["Money En Mi Mente", "9eBbC7qr-Zk"],
+          ["De Chamaquitx (Remix)", "L0nUCdMLAwI"], ["Confio En Mi", "cmpkesmPKiQ"],
+          ["Carta Para Mis Fans", "agddyZd5IKY"], ["La Vida", "kVpP0OEBq4E"]
+        ]
+      },
+      {
+        titulo: "Sencillos", anio: "Varios", portada: "img/sencillos.jpg",
+        canciones: [
+          ["Bzrp Music Sessions, Vol. 40", "s5cYXknsDbY"], ["Triste Verano", "SQymtMNE9BU"],
+          ["Habla Claro", "tbfsHnYROMA"], ["Que Cojones", "VDibXdkD6yQ"],
+          ["Primer Lugar", "UE4gv4_11Ps"], ["Buenos Días", "21puudq4H7g"]
+        ]
+      }
+    ];
+
+    // ---------- PLAYLISTS ----------
+    // canciones: títulos escritos IGUAL que en ALBUMES
+    const PLAYLISTS = [
+      {
+        titulo: "Trap esencial",
+        descripcion: "Los temas que definieron su sonido.",
+        canciones: ["Al Capone", "5 Star", "Guerrero", "Mbappe", "Luchas Mentales", "Mama's Boy"]
+      },
+      {
+        titulo: "Colaboraciones",
+        descripcion: "Eladio junto a Bad Bunny, Bizarrap, Karol G y más.",
+        canciones: ["Kemba Walker", "Coco Chanel", "Bzrp Music Sessions, Vol. 40", "No Te Deseo el Mal", "Si La Calle Llama (Remix)", "Jóvenes Millonarios"]
+      },
+      {
+        titulo: "Era CORSA",
+        descripcion: "Lo más reciente del artista.",
+        canciones: ["Daikoku", "Body", "Ricky Bobby", "Polaroid", "Estrella", "Kimchi"]
+      }
+    ];
+
+    // ---------- VIDEOS (Social) ----------
+    const VIDEOS = [
+      { titulo: "Bzrp Music Sessions, Vol. 40", yt: "s5cYXknsDbY" },
+      { titulo: "Mbappe (Video Oficial)",       yt: "yDhxCiLXEHs" },
+      { titulo: "Al Capone (Video Oficial)",    yt: "LFiZ0ATwjBs" },
+      { titulo: "Daikoku (Video Oficial)",      yt: "wMR80j9QHRY" }
+    ];
+
+    // ---------- FOTOS (Social) ----------
+    // Guarda tus fotos en la carpeta "img" y pon aquí su nombre
+    const FOTOS = [
+      { titulo: "Foto 1", src: "img/eladio-1.jpg" },
+      { titulo: "Foto 2", src: "img/eladio-2.jpg" },
+      { titulo: "Foto 3", src: "img/eladio-3.jpg" }
+    ];
+
+    /* =====================================================================
+       FUNCIONAMIENTO (no hace falta tocarlo)
+       ===================================================================== */
+
+    const $ = (id) => document.getElementById(id);
+
+    // Evita que un texto rompa el HTML
+    function esc(t) {
+      return String(t).replace(/[&<>"']/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[c]));
+    }
+
+    // Mezcla una lista al azar (algoritmo Fisher-Yates)
+    function mezclar(lista) {
+      for (let i = lista.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [lista[i], lista[j]] = [lista[j], lista[i]];
+      }
+      return lista;
+    }
+
+    // Lista plana con todas las canciones de todos los álbumes
+    // ai = número del álbum al que pertenece
+    const TODAS = ALBUMES.flatMap((a, ai) =>
+      a.canciones.map(([titulo, yt]) => ({ titulo: titulo, yt: yt, album: a.titulo, ai: ai }))
+    );
+
+    // De una lista de títulos devuelve los IDs de YouTube
+    function idsDe(titulos) {
+      return titulos
+        .map(t => TODAS.find(c => c.titulo === t))
+        .filter(Boolean)
+        .map(c => c.yt);
+    }
+
+    // ---------- REPRODUCTOR ----------
+    // YouTube toca varios videos seguidos si pones el primero en la dirección
+    // y el resto en el parámetro "playlist"
+    function tocarYoutube(ids, titulo) {
+      const cont = $("contenedorReproductor");
+      if (ids.length === 0) {
+        $("sonando").textContent = "";
+        cont.innerHTML = '<div class="alert alert-warning mb-0">No hay canciones para reproducir.</div>';
+        return;
+      }
+      let src = "https://www.youtube.com/embed/" + ids[0] + "?autoplay=1&rel=0";
+      if (ids.length > 1) src += "&playlist=" + ids.slice(1).join(",");
+
+      $("sonando").textContent = "Sonando: " + titulo;
+      cont.innerHTML =
+        '<div class="ratio ratio-16x9"><iframe src="' + src + '" title="' + esc(titulo) + '" ' +
+        'allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe></div>' +
+        '<a class="btn btn-outline-warning btn-sm mt-2" target="_blank" rel="noopener" ' +
+        'href="https://music.youtube.com/watch?v=' + ids[0] + '">Abrir en YouTube Music</a>';
+      $("reproductor").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function aleatorio() {
+      const ids = mezclar(TODAS.map(c => c.yt)).slice(0, 25);   // 25 al azar
+      tocarYoutube(ids, "Modo aleatorio (" + ids.length + " canciones)");
+    }
+
+    // ---------- MIS PLAYLISTS (se guardan en el navegador con localStorage) ----------
+    const CLAVE = "eladio_mis_playlists";
+
+    function cargar() {
+      try { return JSON.parse(localStorage.getItem(CLAVE)) || []; } catch (e) { return []; }
+    }
+    function guardar() {
+      try { localStorage.setItem(CLAVE, JSON.stringify(misPlaylists)); } catch (e) {}
+    }
+    let misPlaylists = cargar();
+
+    // ---------- DIBUJAR LA PÁGINA ----------
+    function dibujar() {
+
+      // Álbumes con portada. Si la imagen no existe, se queda el recuadro gris con el título
+      $("listaAlbumes").innerHTML = ALBUMES.map((a, i) => `
+        <div class="col">
+          <div class="card h-100 bg-dark border-secondary">
+            <div class="ratio ratio-1x1 bg-secondary">
+              <div class="d-flex align-items-center justify-content-center text-center p-2 fw-bold">${esc(a.titulo)}</div>
+              <img src="${esc(a.portada)}" alt="Portada de ${esc(a.titulo)}" class="object-fit-cover" onerror="this.remove()">
+            </div>
+            <div class="card-body p-2 d-flex flex-column">
+              <h3 class="h6 mb-0">${esc(a.titulo)}</h3>
+              <small class="text-secondary mb-2">${esc(a.anio)}, ${a.canciones.length} canciones</small>
+              <button type="button" class="btn btn-warning btn-sm mt-auto" data-accion="album" data-i="${i}">▶ Escuchar</button>
+            </div>
+          </div>
+        </div>`).join("");
+
+      // Canciones: un panel del acordeón por álbum
+      $("acordeonCanciones").innerHTML = ALBUMES.map((a, ai) => {
+        const filas = TODAS
+          .map((c, i) => ({ c: c, i: i }))
+          .filter(x => x.c.ai === ai)
+          .map(x => `
+            <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center gap-2">
+              <span>${esc(x.c.titulo)}</span>
+              <span class="d-flex gap-2 flex-shrink-0">
+                <button type="button" class="btn btn-warning btn-sm" data-accion="cancion" data-i="${x.i}" aria-label="Reproducir ${esc(x.c.titulo)}">▶</button>
+                <a class="btn btn-outline-warning btn-sm" target="_blank" rel="noopener" href="https://music.youtube.com/watch?v=${x.c.yt}">YT Music</a>
+              </span>
+            </li>`).join("");
+        return `
+          <div class="accordion-item">
+            <h3 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#alb${ai}">
+                ${esc(a.titulo)}<span class="badge text-bg-warning ms-2">${a.canciones.length}</span>
+              </button>
+            </h3>
+            <div id="alb${ai}" class="accordion-collapse collapse" data-bs-parent="#acordeonCanciones">
+              <div class="accordion-body p-0">
+                <div class="p-2 border-bottom">
+                  <button type="button" class="btn btn-warning btn-sm" data-accion="album" data-i="${ai}">▶ Álbum completo</button>
+                </div>
+                <ul class="list-group list-group-flush">${filas}</ul>
+              </div>
+            </div>
+          </div>`;
+      }).join("");
+
+      // Playlists de la casa
+      $("listaPlaylists").innerHTML = PLAYLISTS.map((p, i) => `
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100 bg-dark border-secondary">
+            <div class="card-body d-flex flex-column">
+              <h4 class="card-title h5 text-warning">${esc(p.titulo)}</h4>
+              <p class="card-text">${esc(p.descripcion)}</p>
+              <small class="text-secondary mb-2">${idsDe(p.canciones).length} canciones</small>
+              <button type="button" class="btn btn-warning mt-auto" data-accion="playlist" data-i="${i}">▶ Escuchar playlist</button>
+            </div>
+          </div>
+        </div>`).join("");
+
+      // Mis playlists
+      $("listaMisPlaylists").innerHTML = misPlaylists.length === 0
+        ? '<div class="col-12"><p class="text-secondary">Aún no has creado ninguna. Pulsa "Crear playlist" y elige tus favoritas.</p></div>'
+        : misPlaylists.map((p, i) => `
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card h-100 bg-dark border-warning">
+              <div class="card-body d-flex flex-column">
+                <h4 class="card-title h5 text-warning">${esc(p.nombre)}</h4>
+                <p class="card-text small text-secondary">
+                  ${p.canciones.slice(0, 6).map(esc).join(", ")}${p.canciones.length > 6 ? " y " + (p.canciones.length - 6) + " más" : ""}
+                </p>
+                <div class="d-flex gap-2 mt-auto">
+                  <button type="button" class="btn btn-warning flex-grow-1" data-accion="mia" data-i="${i}">▶ Escuchar</button>
+                  <button type="button" class="btn btn-outline-danger" data-accion="borrarmia" data-i="${i}" aria-label="Eliminar playlist">✕</button>
+                </div>
+              </div>
+            </div>
+          </div>`).join("");
+
+      // Fotos (si falta la imagen se ve el recuadro con el título)
+      $("listaFotos").innerHTML = FOTOS.map(f => `
+        <div class="col">
+          <div class="card h-100 bg-dark border-secondary">
+            <div class="ratio ratio-1x1 bg-secondary">
+              <div class="d-flex align-items-center justify-content-center text-center p-2 small">${esc(f.titulo)}</div>
+              <img src="${esc(f.src)}" alt="${esc(f.titulo)}" class="object-fit-cover" onerror="this.remove()">
+            </div>
+            <div class="card-body p-2"><small>${esc(f.titulo)}</small></div>
+          </div>
+        </div>`).join("");
+
+      // Videos
+      $("listaVideos").innerHTML = VIDEOS.map(v => `
+        <div class="col">
+          <div class="card h-100 bg-dark border-secondary">
+            <div class="ratio ratio-16x9">
+              <iframe src="https://www.youtube.com/embed/${v.yt}" title="${esc(v.titulo)}" loading="lazy" allowfullscreen></iframe>
+            </div>
+            <div class="card-body p-2"><small>${esc(v.titulo)}</small></div>
+          </div>
+        </div>`).join("");
+    }
+
+    // ---------- BOTONES (un solo escuchador para toda la página) ----------
+    document.addEventListener("click", function (ev) {
+      const b = ev.target.closest("[data-accion]");
+      if (!b) return;
+      const accion = b.dataset.accion;
+      const i = Number(b.dataset.i);
+
+      if (accion === "album") tocarYoutube(ALBUMES[i].canciones.map(c => c[1]), ALBUMES[i].titulo);
+      if (accion === "cancion") tocarYoutube([TODAS[i].yt], TODAS[i].titulo);
+      if (accion === "aleatorio") aleatorio();
+      if (accion === "playlist") tocarYoutube(idsDe(PLAYLISTS[i].canciones), PLAYLISTS[i].titulo);
+      if (accion === "mia") tocarYoutube(idsDe(misPlaylists[i].canciones), misPlaylists[i].nombre);
+      if (accion === "borrarmia") {
+        misPlaylists.splice(i, 1);
+        guardar();
+        dibujar();
+      }
+    });
+
+    // ---------- FORMULARIO: CREAR MI PLAYLIST ----------
+    const modalCrear = $("modalCrear");
+    const form = $("formCrear");
+    const errorForm = $("errorForm");
+
+    // Una casilla por cada canción, agrupadas por álbum
+    $("checklist").innerHTML = ALBUMES.map((a, ai) => `
+      <h6 class="text-warning mt-3 mb-1">${esc(a.titulo)}</h6>
+      ${TODAS.map((c, i) => ({ c: c, i: i })).filter(x => x.c.ai === ai).map(x => `
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="${x.i}" id="chk${x.i}">
+          <label class="form-check-label" for="chk${x.i}">${esc(x.c.titulo)}</label>
+        </div>`).join("")}
+    `).join("");
+
+    modalCrear.addEventListener("show.bs.modal", function () { errorForm.classList.add("d-none"); });
+    modalCrear.addEventListener("hidden.bs.modal", function () { form.reset(); });
+
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();   // evita recargar la página
+      const nombre = $("nombrePlaylist").value.trim();
+      const elegidas = [...document.querySelectorAll("#checklist input:checked")]
+        .map(x => TODAS[Number(x.value)].titulo);
+
+      if (elegidas.length === 0) {
+        errorForm.textContent = "Marca al menos una canción.";
+        errorForm.classList.remove("d-none");
+        return;
+      }
+
+      misPlaylists.push({ nombre: nombre, canciones: elegidas });
+      guardar();
+      dibujar();
+      bootstrap.Modal.getInstance(modalCrear).hide();   // cierra el modal
+      $("listaMisPlaylists").scrollIntoView({ behavior: "smooth" });
+    });
+
+    // ---------- INICIO ----------
+    dibujar();
+  </script>
+</body>
+</html>
