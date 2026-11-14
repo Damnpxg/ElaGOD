@@ -14,7 +14,13 @@
   <!-- ========== 1. NAVBAR ========== -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-warning">
     <div class="container">
-      <a class="navbar-brand fw-bold text-warning" href="#inicio">Eladio Carrión</a>
+
+      <!-- Marca con logo: el <a> va DENTRO del container, que a su vez está dentro del <nav> -->
+      <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-warning" href="#inicio">
+        <img src="img/logo.png" alt="Logo de Eladio Carrión" width="40" height="40"
+             class="rounded-circle object-fit-cover" onerror="this.remove()">
+        <span>Eladio Carrión</span>
+      </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
               data-bs-target="#menuPrincipal" aria-controls="menuPrincipal"
@@ -29,7 +35,6 @@
           <li class="nav-item"><a class="nav-link" href="#canciones">Canciones</a></li>
           <li class="nav-item"><a class="nav-link" href="#playlists">Playlists</a></li>
           <li class="nav-item"><a class="nav-link" href="#social">Social</a></li>
-          <!-- Abre el MODAL DE FORMULARIO (crear mi playlist) -->
           <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
             <button type="button" class="btn btn-warning"
                     data-bs-toggle="modal" data-bs-target="#modalCrear">
@@ -40,15 +45,6 @@
       </div>
     </div>
   </nav>
-<!-- d-flex + align-items-center: logo y texto en fila, centrados verticalmente
-     gap-2: espacio entre el logo y el nombre -->
-<a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-warning" href="#inicio">
-  <!-- width y height fijos: reservan el espacio y evitan saltos al cargar
-       rounded-circle: lo recorta en círculo
-       object-fit-cover: la imagen llena el círculo sin deformarse
-       onerror: si la imagen falta, desaparece y no se ve el icono roto -->
-  <img src="logo.png" alt="Logo de Eladio Carrión" width="40" height="40"
-       class="rounded-circle object-fit-cover" onerror="this.remove()">
   <span>Eladio Carrión</span>
 </a>
   <!-- ========== 2. HERO (container-fluid = ancho completo) ========== -->
