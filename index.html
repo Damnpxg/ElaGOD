@@ -12,15 +12,14 @@
 <body class="bg-black text-white">
 
   <!-- ========== 1. NAVBAR ========== -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-warning">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-warning">
+  <div class="container-fluid">   <!-- antes decía: container -->
 
-      <!-- Marca con logo: el <a> va DENTRO del container, que a su vez está dentro del <nav> -->
-      <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-warning" href="#inicio">
-        <img src="logo.jpg" alt="Logo de Eladio Carrión" width="120" height="120"
-             class="rounded-circle object-fit-cover" onerror="this.remove()">
-        <span>Eladio Carrión</span>
-      </a>
+    <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-warning" href="#inicio">
+      <img src="logo.png" alt="Logo de Eladio Carrión" width="100" height="100"
+           class="rounded-circle object-fit-cover" onerror="this.remove()">
+      <span>Eladio Carrión</span>
+    </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
               data-bs-target="#menuPrincipal" aria-controls="menuPrincipal"
