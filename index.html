@@ -47,9 +47,24 @@
     </div>
   </nav>
   
-  <!-- ========== 2. HERO (container-fluid = ancho completo) ========== -->
-  <header id="inicio" class="container-fluid bg-dark text-white py-5 border-bottom border-warning border-4">
-    <div class="py-4 text-center">
+    <!-- ========== 2. HERO CON IMAGEN DE FONDO ==========
+       position-relative: el hero es el "marco" donde se ubica la imagen
+       overflow-hidden: corta lo que sobre de la imagen -->
+  <header id="inicio" class="container-fluid bg-dark text-white py-5 border-bottom border-warning border-4 position-relative overflow-hidden">
+
+    <!-- La imagen de fondo:
+         position-absolute top-0 start-0: pegada a la esquina de arriba a la izquierda
+         w-100 h-100: cubre todo el hero
+         object-fit-cover: se recorta sin deformarse en celular y computadora
+         opacity-50: se mezcla con el fondo oscuro y las letras siguen leyéndose
+         alt="" y aria-hidden: es decorativa
+         onerror: si la imagen falta, desaparece y queda el fondo oscuro -->
+    <img src="fondo.jpg" alt="" aria-hidden="true"
+         class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover opacity-50"
+         onerror="this.remove()">
+
+    <!-- position-relative z-1: el contenido queda ENCIMA de la imagen -->
+    <div class="position-relative z-1 py-4 text-center">
       <h1 class="display-1 fw-bold text-warning">Eladio Carrión</h1>
       <p class="lead col-lg-6 mx-auto my-4">
         Escucha sus canciones completas sin salir de la página,
